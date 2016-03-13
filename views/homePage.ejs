@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="nameApp1">  
+<head>    
+<title>Successful Login</title>    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+  <script>
+
+      var nameApp1 = angular.module('nameApp', []);
+
+      nameApp.controller('NameCtrl1', function ($scope){
+
+//        $scope.names = ['Larry', 'Curly', 'Moe'];
+
+        $scope.addName = function() {
+
+          $scope.names.push($scope.enteredName);
+
+        };
+
+      });
+      
+    </script>
+</head>  
+<body ng-controller="NameCtrl1">
+ 
+       <h3>HomePage of twitter</h3>
+       <%if((typeof name != 'undefined') && name != ""){%>
+       <h1><%= name1 %></h1>
+       <%}%>
+      
+</div>                                   
+<div align="right">
+   <nav id="nav">
+   <ul id="navigation">
+      <ul>
+        <p><a href="/profile">View Profile</a></p>       
+        <p><a href="/logout">Log Out</a></p>
+      </ul>
+  </ul>
+</nav>
+</div>
+
+<div id='main' class="container" ng-controller="mainController">
+      <div class="col-md-offset-2 col-md-8">
+        <div class="clearfix">
+          <form action="/insertTweet">          
+            <textarea required class="form-control" maxlength="140" rows="3" placeholder="What's happening?" ng-model="newPost.text" name="tweet_box"></textarea>
+            <input class="btn submit-btn pull-right" type="submit" value="Tweet!" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div align="center">
+    <%if((typeof tweets != 'undefined') && tweets != ""){%>
+    <% for(var i = 0; i < tweets.length; i++){ %>
+    <form action="/retweet" method="get">
+    <p><%=name[i]%> at <%= tweet_time[i]%></p>
+    <p> <%= tweets[i].raw_text %> </p>
+    <button name="retweet" value="<%=tweets[i].ID%>" type="submit">Retweet</button>
+    </form>
+	<% } %>
+	<% } %>
+	</div>
+
+	<div align="right">
+	
+	 <%if((typeof users != 'undefined') && users != ""){%>
+    <% for(var i = 0; i < users.length; i++){ %>
+    <form action="/follow_user" method="get">
+    <p><%= users[i] %> </p>
+	<button name="follow" value="<%= users[i]%>" type="submit">Follow</button>
+	</form>	
+	<% } %>
+	<% } %>
+	</div>
+
+
+</body>
+</html> 

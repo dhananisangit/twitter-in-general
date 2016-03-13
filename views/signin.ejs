@@ -1,0 +1,52 @@
+<html>  
+<head>       
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstr ap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstr ap-theme.min.css">
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script
+            src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <!-- Loading the AngularJS file -->
+    <script src="angularjs/login.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap .min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</head>
+<body ng-app="login" ng-controller="login">
+<div align="right">
+<h1>Not a user?</h1>
+<a href="/signup">Sign up here</a>
+</div>
+<div class="text-box">
+    
+        <div class="signup-wrapper">
+            <h1>Log in to your account</h1>
+            <input type="text" class="textbox-control" name="username" id="username" placeholder="User Name" required maxlength="20" ng-model="username"></br></br>
+            <input type="password" class="textbox-control"name="password" id="inputPassword" placeholder="Password" required ng-model="password"></br></br>
+            <div class="signup-wrapper">
+                <div class="alert alert-danger" ng-hide="invalid_login">
+                    <strong>Incorrect username or password</strong>
+                </div>
+
+                <div class="alert alert-danger" ng-hide="unexpected_error">
+                    <strong>Unexpected error,try again</strong>
+                </div>
+                <input type="submit" style="color:white" class="submit-button" value="Log-in" style="position:relative;left:0px;" ng-click="submit();"></br></br>
+
+                </div>
+            </div>
+        </div>
+        </div>
+
+</body>
+</html>
+

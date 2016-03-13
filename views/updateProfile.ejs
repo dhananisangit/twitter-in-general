@@ -1,0 +1,39 @@
+<!DOCTYPE html><html>  
+<head>    
+<title>Successful Login</title>    
+<link rel='stylesheet' href='/stylesheets/style.css' />  
+</head>  
+
+<body>    
+
+<div align="center">
+<h1>Tweets and Retweets by you</h1>
+    <%if((typeof tweets != 'undefined') && tweets != ""){%>
+    <% for(var i = 0; i < tweets.length; i++){ %>
+    <p><%=name[i]%> at <%= tweet_time[i]%></p>
+    <p> <%= tweets[i].raw_text %> </p>
+	<% } %>
+	<% } %>
+</div>
+       <h3>Update Profile</h3>
+<form action="/updateProfile">                  
+Date of birth: <input type="date" name="dob"><br>
+UserName : <input type="text" name="user_name"><br>
+Gender: <br>
+Male<input type="radio" name="gender" required><br>
+Female<input type="radio" name="gender" required><br>
+BIO : <input type="text" name="BIO"><br>
+Location: <input type="text" name="location"><br>
+Upload a Display Pictue :  <input type="file" name="profile_pic" accept="image/*"><br/><br/>
+
+<button type="submit">Update</button>                                
+</form>
+
+
+<div align="right">
+<form action="/homePage">
+<button type="submit">Home Page</button>
+</form>	
+</div>
+</body>
+</html>
