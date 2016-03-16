@@ -1,6 +1,6 @@
 var ejs= require('ejs');//importing module ejs
 var mysql = require('mysql');//importing module
-
+/*
 function getConnection(){
 	var connection = mysql.createConnection({
 		host : 'localhost',
@@ -10,27 +10,35 @@ function getConnection(){
 		port : 3306
 	});
 	return connection;
-}
+}*/
+
+var pool      =    mysql.createPool({
+    connectionLimit : 100, //important
+    host : 'localhost',
+	user : 'root',
+	password : 'sangit',
+	database : 'twitterDB',
+	port : 3306
+});
 
 function fetchData(callback, sqlQuery){
 	//console.log("\nSqlquery:: "+ sqlQuery );
-	var connection = getConnection();
-	connection.query(sqlQuery, function(err, rows, fields){
-		if(err){
-			console.log("ERROR: " + err.message);
-		}
-		else{
-		//	console.log("DB Results:"+rows);   
-			callback(err, rows);
-		}
+	pool.getConnection(function(err, connection){
+		connection.query(sqlQuery, function(err, rows, fields){
+			if(err){
+				console.log("ERROR: " + err.message);
+			}
+			else{
+			//	console.log("DB Results:"+"hellllloooooo");   
+				callback(err, rows);
+			}
+		});
+		connection.release();
 	});
-	//console.log("Connection closed");
-	connection.end();
+	
 }
 
 function storeData(callback, sqlQuery){
-	//console.log("it is "+ sqlQuery+" : "+userInfo.userID);
-	
 	var connection = getConnection();
 	connection.query(sqlQuery, function(err, rows, fields){
 		if(err){
@@ -43,6 +51,9 @@ function storeData(callback, sqlQuery){
 	});
 	connection.end();
 }
+
+
+
 
 exports.fetchData = fetchData;
 exports.storeData=storeData;

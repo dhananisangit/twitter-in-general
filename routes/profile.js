@@ -1,6 +1,7 @@
 var ejs = require('ejs');
 var mysql = require('./mysql');
 
+
 function profile(req, res){
 	console.log("Chutiya spotted at profile.profile");
 	console.log(req.session.username+":: at req.session.username");	
@@ -25,7 +26,7 @@ function profile(req, res){
 				else{
 					names[i] ="@" +result[i].user_name;
 				}
-				console.log(names[i]);
+			//	console.log(names[i]);
 			}
 			
 			ejs.renderFile('./views/updateProfile.ejs',{tweets: result, tweet_time:date, name:names}, function(err, result) {
@@ -96,7 +97,53 @@ function updateProfile(req, res){
 		}
 	}, updateProfile);
 }
+
+
+function userprofile(req, res){
+	//console.log(req.params.name);
+	console.log(req.param("user")+"  HAHAAHAANDJSAKDBHASBDKASVHJ");
+	//res.redirect('/profile/'+req.param("user"));
+	console.log(req.params.name);
+	console.log(req.query.id);
+	var loadTweets = "select * from tweet_details where retweet_user='"+req.param("user")+"'or user_name='"+req.param("user")+"' ORDER BY ID DESC ";
+	console.log(loadTweets);
+	mysql.fetchData(function(err, result){
+		if(err){
+			throw err;
+			}
+		else{
+			var date=[];
+			for(var i=0;i<result.length;i++){
+			var	time= result[i].timeofTweet.toString();
+			var splitResult = time.split("2016");
+			date[i] = splitResult[0];
+			}
+			var names = [];
+			for(var i=0;i<result.length;i++){
+				var time = result[i].user_name;
+				if(time!=req.session.username){
+					names[i]="You Retweeted @"+result[i].user_name;
+				}
+				else{
+					names[i] ="@" +result[i].user_name;
+				}
+			//	console.log(names[i]);
+			}
+			
+			ejs.renderFile('./views/updateProfile.ejs',{tweets: result, tweet_time:date, name:names}, function(err, result) {
+				if (!err) {
+					res.end(result);
+					}                    
+				else {               
+					res.end('An error occurred');              
+					console.log(err);           
+					}
+			});
+		}
+	}, loadTweets);
+	
+}
 exports.profile=profile;
 exports.updateProfile=updateProfile;
-
+exports.userprofile = userprofile;
 

@@ -1,17 +1,23 @@
 var ejs = require('ejs');
 var mysql = require('./mysql');
 var homePage = require('./homePage');
-//var async = require("async");
-
+var async = require("async");
+var crypto = require('crypto');
 
 function afterSignIn(req, res){
-
-	 var getUser = "select * from login_details where user_name='" + req.param("username") + "' and password='" + req.param("password") + "'";
-	    req.session.username = req.param("username");
-	    console.log("req.session.username at homePage.afterSignIn::"+req.session.username);
-	    var json_responses;
-	    var user_name=req.param("username");
-	    var password=req.param("password");
+	
+	var decipher = crypto.createDecipher('aes-256-ctr', 'd6F3Efeqwerty')
+	var hash = decipher.update(req.param("password"),'utf8','hex')
+	hash += decipher.final('hex');	 
+	//console.log(hash);
+	//console.log("hlloo");
+    var getUser = "select * from login_details where user_name='" + req.param("username") + "' and password='" +hash+ "'";
+    req.session.username = req.param("username");
+    console.log("req.session.username at homePage.afterSignIn::"+req.session.username);
+    var json_responses; 
+    var user_name=req.param("username");
+    var password=req.param("password");
+    
 
 	    mysql.fetchData(function (err, results) {
 		if(user_name!== ''  && password!== '')
@@ -37,138 +43,166 @@ function afterSignIn(req, res){
 
 function redirectToHomepage(req,res)
 {
-    //Checks before redirecting whether the session is valid
-    if(req.session.username)
-    {
-    	console.log("spotted at :: "+req.session.username);
-        //Set these headers to notify the browser not to maintain any cache for the page being loaded
-        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-        //res.render("homePage",{user:req.session.user_name});
-        var users = "select user_name from login_details";
-    	mysql.fetchData(function(err, result){
-    		if(err){
-    			throw err;
-    			}
-    		else{
-    			var users_name = new Array(result.length);
-    			for(var i=0;i<result.length;i++){
-    				if(result[i].user_name!=req.session.loginInfo){
-    					users_name[i] = result[i].user_name ;
-    				}	
-    			}			
-    			req.session.followusers = users_name;
-    		}
-    	}, users);
-    	
-    	if(req.session.username){
-    	var loadTweets = "select * from tweet_details ORDER BY ID DESC";
-    	mysql.fetchData(function(err, result){
-    		if(err){
-    			throw err;
-    			}
-    		else{
-    			console.log("Chutiya at::homePage.afterSignIn");
-    			//console.log(req.session.followusers);
-    			var date=[];
-    			for(var i=0;i<result.length;i++){
-    			var	time= result[i].timeofTweet.toString();
-    			var splitResult = time.split("2016");
-    			date[i] = splitResult[0];
-    			}
-    			var names = [];
-    			for(var i=0;i<result.length;i++){
-    				var time = result[i].user_name;
-    				if(time!=req.session.username){
-    					names[i]="You Retweeted @"+result[i].user_name;
-    				}
-    				else{
-    					names[i] ="@" +result[i].user_name;
-    				}
-    			//	console.log(names[i]);
-    			}
-    			ejs.renderFile('./views/homePage.ejs',{tweets: result, 
-    				users:req.session.followusers, 
-    				tweet_time:date, 
-    				name:names, 
-    				name1:req.session.username}, function(err, result) {
-    				if (!err) {
-    					res.end(result);
-    					}                    
-    				else {               
-    					res.end('An error occurred');              
-    					console.log(err);           
-    					}
-    			});
-    		}
-    	}, loadTweets);
-      }
+
+	async.waterfall([       
+         function first(callback){
+        	 console.log("spotted at :: "+req.session.username);
+        	 //Set these headers to notify the browser not to maintain any cache for the page being loaded
+        	 res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+        	 //res.render("homePage",{user:req.session.user_name});
+        	 var users = "select following_username from follow where user_name='"+req.session.username+"'";
+        	 console.log(users);
+        	 mysql.fetchData(function(err, result){
+        			if(err){
+        				throw err;
+        				}
+        			else{
+        				if(result.length>0){
+        				console.log(result.length>0);
+        				var users_name="";
+        				for(var i=0;i<result.length;i++){      				
+        					if(result[i].user_name!=req.session.username){     						
+        						if(i!=result.length-1){users_name += "'"+result[i].following_username+"'"+", " ;}
+        						else{users_name += "'"+result[i].following_username+"'";}
+        					}	
+        				}			
+        				var sjd = users_name;
+        				console.log("REQ:"+sjd);
+        				}
+        				else{
+        					var sjd = "You have nothing on your feed. Follow users to view their tweets";
+        					console.log(sjd);
+        				}
+        			}
+        			callback(null,sjd);
+        		}, users); 
+         },
+         
+       function second(sjd, callback){
+        	 
+         if(sjd!="You have nothing on your feed. Follow users to view their tweets"){
+        	
+     		//var users = "select user_name from login_details";
+     		//var allUsers = "SELECT * FROM users WHERE username NOT IN (SELECT followed FROM connections WHERE follows = '"+req.session.username+"') AND username != '"+req.session.username+"'";
+     		var users = "SELECT user_name FROM login_details WHERE user_name NOT IN (SELECT following_username FROM follow WHERE user_name = '"+req.session.username+"') AND user_name != '"+req.session.username+"'"
+     		console.log(users);
+     		var users_name = [];
+     		mysql.fetchData(function(err, result){
+ 				if(err){
+ 					throw err;
+ 					}
+ 				else{
+ 					/*var compare = sjd;
+ 					for(var i=0;i<compare.length;i++){
+ 						console.log(compare[i]+"::lplp");
+ 					}*/
+ 					for(var i=0;i<result.length;i++){
+ 						if(result[i].user_name!=req.session.username){
+ 							//console.log(sjd+"::"+result[i].user_name);
+ 							users_name[i] = result[i].user_name ;
+ 						}	
+ 					}			
+ 					req.session.followusers = users_name;
+ 				}
+ 			}, users);
+
+     		console.log(req.session.followusers+"::yeh h exterior");
+     		var loadtweets = "SELECT * FROM tweet_details WHERE user_name IN ("+sjd+", '"+req.session.username+"') ORDER BY ID DESC" ;
+     		console.log(loadtweets);
+     		
+         	mysql.fetchData(function(err, result){
+         		if(err){
+         			throw err;
+         			}
+         		else{
+         			var sjd1="";
+         			console.log(result.length>0);
+         			
+         		if(result.length>0){
+         			
+         			console.log(req.session.followusers+":: joile");
+         			var date=[];
+         			for(var i=0;i<result.length;i++){
+         			var	time= result[i].timeofTweet.toString();
+         			var splitResult = time.split("2016");
+         			date[i] = splitResult[0];
+         			}
+         			
+         			ejs.renderFile('./views/homePage.ejs',{tweets: result, 
+         				users:req.session.followusers, 
+         				tweet_time:date,  
+         				name1:req.session.username }, function(err, result) {
+         				if (!err) {
+         					res.end(result);
+         					}                    
+         				else {               
+         					res.end('An error occurred');              
+         					console.log(err);           
+         					}
+         			});
+         		}
+         			
+         			else{
+         				var sjd="The users you follow have no tweets. Try following some more users";
+         				console.log(users_name+"::1st");
+         				console.log(req.session.followusers+"::2nd")
+         				ejs.renderFile('./views/homePage.ejs',{users:req.session.followusers, 
+         					name1:req.session.username,
+         					noTweet:sjd}, function(err, result) {
+             				if (!err) {
+             					res.end(result);
+             					}                    
+             				else {               
+             					res.end('An error occurred');              
+             					console.log(err);           
+             					}
+             			});
+         			}
+         			
+         		}
+         		callback(null, sjd1);
+         	}, loadtweets);
+         	
+         }
+        	 
+        	 else{
+        			var users = "select user_name from login_details";
+             		var users_name = [];
+             		mysql.fetchData(function(err, result){
+         				if(err){
+         					throw err;
+         					}
+         				else{
+         					console.log("No tweets found as you aint following anyone bitch");
+         					for(var i=0;i<result.length;i++){
+         						if(result[i].user_name!=req.session.username){	
+         							users_name[i] = result[i].user_name ;
+         						}	
+         					}			        
+         					 ejs.renderFile('./views/homePage.ejs', {noTweet:sjd, users:users_name, name1:req.session.username}, function(err, result){
+         	        			 if(!err){
+         	        				 res.end(result);
+         	        			 }
+         	        			 else{
+         	        				 res.end('An error occured');
+         	        				 console.log(err);
+         	        			 }
+         	        		 });
+         				}
+         			}, users);
+        	 }
+         }
+	                 
+], function(err, result) { // the "complete" callback of `async.waterfall`
+    if ( err ) { // there was an error with either `getTicker` or `writeTicker`
+        console.warn('Error loading the tweets.',err);
+        return;
+    } else {
+        console.log('Successfully completed operation.');
     }
-    else
-    {
-        res.redirect('/');
-    }
-}
-	
-/*	if(req.session.username)
-    {
-		var following_users="";
-    	console.log("spotted at :: "+req.session.username);
-        //Set these headers to notify the browser not to maintain any cache for the page being loaded
-        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-        //res.render("homePage",{user:req.session.user_name});
-        var users = "select distinct following_username from follow_details where user_name='"+req.session.username+"'";
-    	mysql.fetchData(function(err, result){
-    		if(err){
-    			throw err;
-    			}
-    		else{
-    			var following_users="";
-    			var num = result.length;
-    			for(var i=0;i<result.length;i++){
-    		    	
-    				if(i!=result.length-1){
-    		    	following_users += '+result[i].following_username+, ';
-    				}
-    				else{
-    					following_users +='+result[i].following_username+';
-    				}
-    	
-    			}
-    			console.log(following_users);
-    			console.log("2");
-    			req.session.fusers=following_users;
-    		}   		
-    	}, users);  
-    }
-	homePage.loadtweets(req, res);
+});		
 }
 
-function loadtweets(req, res){
-	//var loadtweets = "select raw_text from tweet_details where user_name in ('"+req.session.fusers+"')";
-	var loadtweets = "SELECT raw_text FROM tweet_details WHERE user_name IN ('"+req.session.fusers+"')" ;
-	console.log("1");
-	//console.log(following_users);
-	console.log("OIOI"+loadtweets); 
-	mysql.fetchData(function(err, result){
-		if(err){
-			throw err;
-			}
-		else{
-			console.log(result.length>0);
-			console.log("hahaa");
-			ejs.renderFile('./views/homePage.ejs',{tweets: result}, function(err, result) {
-				if (!err) {
-					res.end(result);
-					}                    
-				else {               
-					res.end('An error occurred');              
-					console.log(err);           
-					}
-			});
-		}
-	}, loadtweets);
-	
-}*/
 
 function aftersignup(req, res){
 	req.session.username=req.param('username');
@@ -181,7 +215,7 @@ function aftersignup(req, res){
 	var query = "UPDATE twitterDB.user_details SET user_name='"+req.param("username")+
 	"' WHERE email_ID='"+emailID+"'";
 	
-	mysql.storeData(function(err, result){
+	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}
@@ -191,7 +225,7 @@ function aftersignup(req, res){
 	var query1 = "UPDATE twitterDB.login_details SET user_name='"+req.param("username")+
 "' WHERE email_ID='"+emailID+"'";
 	
-	mysql.storeData(function(err, result){
+	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}
@@ -230,20 +264,22 @@ function newTweet(req, res){
 		var insertTweet = "insert into tweet_details(user_name,raw_text) values('"+req.session.username+"','"+req.param("tweet_box")+"')";
 	}
 	
-	mysql.storeData(function(err, result){
+	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}			
 		}
 	, insertTweet);
 	
-	var loadTweets = "SELECT * FROM tweet_details ORDER BY ID DESC";
+	homePage.redirectToHomepage(req, res);
+	/*var loadTweets = "SELECT * FROM tweet_details ORDER BY ID DESC";
+	
 	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}
 		else{
-			ejs.renderFile('./views/homePage.ejs',{tweets: result}, function(err, result) {
+			ejs.renderFile('./views/homePage.ejs',{tweets: result, name:req.session.username}, function(err, result) {
 				if (!err) {
 					res.end(result);
 					}                    
@@ -253,7 +289,7 @@ function newTweet(req, res){
 					}
 			});
 		}
-	}, loadTweets);
+	}, loadTweets);*/
 }
 
 function home(req, res){
@@ -282,9 +318,15 @@ function home(req, res){
 			throw err;
 			}
 		else{
+			var date=[];
 			console.log("Chutiya at::homePage.afterSignIn");
 			console.log(req.session.followusers);
-			ejs.renderFile('./views/homePage.ejs',{tweets: result, name:req.session.username, users:req.session.followusers}, function(err, result) {
+			for(var i=0;i<result.length;i++){
+				var	time= result[i].timeofTweet.toString();
+				var splitResult = time.split("2016");
+				date[i] = splitResult[0];
+				}
+			ejs.renderFile('./views/homePage.ejs',{tweets: result,tweet_time:date, name:req.session.username, users:req.session.followusers}, function(err, result) {
 				if (!err) {
 					res.end(result);
 					}                    
@@ -301,7 +343,6 @@ function home(req, res){
 		res.render('homePage');
 	}
 }
-
 
 function retweet(req, res){
 	console.log(req.session.username);

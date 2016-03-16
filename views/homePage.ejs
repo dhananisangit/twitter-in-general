@@ -2,38 +2,40 @@
 <html ng-app="nameApp1">  
 <head>    
 <title>Successful Login</title>    
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
   <script>
-
-      var nameApp1 = angular.module('nameApp', []);
-
-      nameApp.controller('NameCtrl1', function ($scope){
-
-//        $scope.names = ['Larry', 'Curly', 'Moe'];
-
+      var nameApp1 = angular.module('nameApp1', []);
+      nameApp1.controller('NameCtrl1', function ($scope){
+        $scope.names = [];
         $scope.addName = function() {
-
-          $scope.names.push($scope.enteredName);
-
+        $scope.names.push($scope.enteredName);
+        $scope.enteredName="";
         };
-
+        $scope.removeName = function(name){
+        var i = $scope.names.indexOf(name);
+        $scope.names.splice(i, 1);
+        };
       });
-      
-    </script>
+ </script>
 </head>  
 <body ng-controller="NameCtrl1">
  
-       <h3>HomePage of twitter</h3>
-       <%if((typeof name != 'undefined') && name != ""){%>
-       <h1><%= name1 %></h1>
+
+       <h2>HomePage of twitter</h2>
+       <%if((typeof name1 != 'undefined') && name1 != ""){%>
+       <h6>Welcome <%=name1%></h6>
        <%}%>
-      
-</div>                                   
+                                      
 <div align="right">
    <nav id="nav">
    <ul id="navigation">
       <ul>
+        <form action="/search">
+     	 
+		<input id="search" name="search" type="search" placeholder="Search Twitter">
+		<button type="submit">Search</button>
+		</form>
         <p><a href="/profile">View Profile</a></p>       
         <p><a href="/logout">Log Out</a></p>
       </ul>
@@ -41,36 +43,51 @@
 </nav>
 </div>
 
-<div id='main' class="container" ng-controller="mainController">
+<div id='main' class="container">
       <div class="col-md-offset-2 col-md-8">
         <div class="clearfix">
           <form action="/insertTweet">          
-            <textarea required class="form-control" maxlength="140" rows="3" placeholder="What's happening?" ng-model="newPost.text" name="tweet_box"></textarea>
+            <textarea required ng-model="enteredName" class="form-control" maxlength="140" rows="3" placeholder="What's happening?" name="tweet_box"></textarea>
             <input class="btn submit-btn pull-right" type="submit" value="Tweet!" />
           </form>
         </div>
       </div>
     </div>
+    
     <div align="center">
+    
+   
     <%if((typeof tweets != 'undefined') && tweets != ""){%>
     <% for(var i = 0; i < tweets.length; i++){ %>
     <form action="/retweet" method="get">
-    <p><%=name[i]%> at <%= tweet_time[i]%></p>
-    <p> <%= tweets[i].raw_text %> </p>
+    <%if((typeof tweet_time != 'undefined') && tweet_time != ""){%>
+    <p>@<%=tweets[i].user_name%> at <%= tweet_time[i]%></p>
+    <% } %>
+    <%if((typeof tweets[i].raw_text != 'undefined') && tweets[i].raw_text != ""){%>
+    <p> <%= tweets[i].raw_text %> </p>   
     <button name="retweet" value="<%=tweets[i].ID%>" type="submit">Retweet</button>
     </form>
+    <% } %>
 	<% } %>
+	<% } %>
+	
+	<%if((typeof noTweet != 'undefined') && noTweet != ""){%>
+	<h3><%=noTweet%></h3>
 	<% } %>
 	</div>
+	
 
-	<div align="right">
+	<div style="float:right;">
 	
 	 <%if((typeof users != 'undefined') && users != ""){%>
     <% for(var i = 0; i < users.length; i++){ %>
-    <form action="/follow_user" method="get">
-    <p><%= users[i] %> </p>
-	<button name="follow" value="<%= users[i]%>" type="submit">Follow</button>
-	</form>	
+     <form action="/follow_user" method="get">  
+  <!--   <form action="/userprofile/<%= users[i]%>"> --> 
+     <a name="user" value="<%= users[i]%>" href="/userprofile/<%= users[i]%>"><%= users[i] %> </a><br/> 
+  	<!-- <button name="user" value="<%= users[i]%>" type="submit"><%= users[i]%></button> -->
+	 <button name="follow" value="<%= users[i]%>" type="submit">Follow</button> 
+	 <!-- </form> -->	
+	 </form> 
 	<% } %>
 	<% } %>
 	</div>

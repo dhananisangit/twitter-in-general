@@ -41,15 +41,25 @@ app.post('/aftersignin',homePage.afterSignIn);
 app.get('/signup', home.signup);
 app.post('/signuppage', home.signuppage);
 app.use('/logout', home.signin);
+app.use('/addUsername', home.addUsername);
 app.use('/updatePage',homePage.aftersignup);
 app.use('/profile',profile.profile);
 app.use('/insertTweet', homePage.newTweet);
 app.use('/updateProfile', profile.updateProfile);
 app.get('/homepage', homePage.redirectToHomepage);
 app.get('/retweet', homePage.retweet);
+/*app.get('/userprofile/*', function(req, res){
+  //res.send('user ' + req.params.id);
+	//console.log(req.params.name);
+	console.log(req.param("user")+"  HAHAAHAANDJSAKDBHASBDKASVHJ");
+	res.redirect('/profile/'+req.param("user"));
+});*/
 
+app.get('/userprofile/', profile.userprofile);
 app.get('/follow_user', user.follow_user);
-app.use('/home', homePage.home)
+app.use('/home', homePage.home);
+app.use('/search', user.search);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
