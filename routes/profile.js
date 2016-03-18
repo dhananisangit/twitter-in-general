@@ -3,9 +3,11 @@ var mysql = require('./mysql');
 
 
 function profile(req, res){
+	
 	console.log("Chutiya spotted at profile.profile");
 	console.log(req.session.username+":: at req.session.username");	
-	var loadTweets = "select * from tweet_details where retweet_user='"+req.session.username+"'or user_name='"+req.session.username+"' ORDER BY ID DESC ";
+	var loadTweets = "select * from tweet_details where retweet_user='"+req.session.username+"'or user_name='"+req.session.username+"' ORDER BY ID DESC select following_username from follow where user_name='"+req.session.username+"';"
+	console.log("its an :"+loadTweets);
 	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
@@ -16,6 +18,7 @@ function profile(req, res){
 			var	time= result[i].timeofTweet.toString();
 			var splitResult = time.split("2016");
 			date[i] = splitResult[0];
+			console.log("date ke niche"+ result[i].following_username);
 			}
 			var names = [];
 			for(var i=0;i<result.length;i++){
@@ -26,10 +29,8 @@ function profile(req, res){
 				else{
 					names[i] ="@" +result[i].user_name;
 				}
-			//	console.log(names[i]);
-			}
-			
-			ejs.renderFile('./views/updateProfile.ejs',{tweets: result, tweet_time:date, name:names}, function(err, result) {
+			}			
+			ejs.renderFile('./views/profile.ejs',{tweets: result, tweet_time:date, name:names}, function(err, result) {
 				if (!err) {
 					res.end(result);
 					}                    

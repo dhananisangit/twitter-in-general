@@ -4,8 +4,8 @@ var homePage = require('./homePage');
 
 exports.follow_user = function(req, res){
 	console.log(req.session.username);
-	console.log(req.param("follow"));
-	//console.log("OIOIO");
+	//console.log(req.param("follow"));
+	//console.log("OIOIO::"+ user_followed);
 	var follow_query = "insert into follow (user_name, following_username)" +
 	"values('"+req.session.username+"', '"+req.param("follow")+"')";
 	
@@ -19,7 +19,10 @@ exports.follow_user = function(req, res){
 	homePage.redirectToHomepage(req, res);
 }
 
-
+exports.temp = function(req, res){
+	console.log("temp");
+	res.render('index1');
+}
 exports.search = function(req, res){
 	console.log("Search page it is");
 	console.log(req.param("search"));
@@ -31,7 +34,7 @@ exports.search = function(req, res){
 			throw err;
 			}
 		else{
-			ejs.renderFile('./views/index.ejs',{tweets: result}, function(err, result) {
+			ejs.renderFile('./views/index.ejs',{search_tweets: result}, function(err, result) {
  				if (!err) {
  					res.end(result);
  					}                    
@@ -42,6 +45,5 @@ exports.search = function(req, res){
  			});
 		}
 		}
-	, search_query);	
-	
+	, search_query);		
 }

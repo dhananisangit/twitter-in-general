@@ -2,17 +2,14 @@
 <html>
 <link rel='stylesheet' href='/stylesheets/stylet3.css' />
 <body>
- <div class="StreamsHero">
-      <div class="StreamsHero-image" style="background-image: url(https://abs.twimg.com/a/1458003619/img/t1/lohp_streams_header_bg_v4.png);"></div>
-      <div class="StreamsHero-buttonContainer">
-        <a href='/' class="js-nav" data-component="hero" data-element="logo"><span class="Icon Icon--bird"></span><span class="visuallyhidden">Home</span></a>
-        <a class="Button StreamsSignUp js-nav js-signup" data-component="hero" data-element="buttons" href="https://twitter.com/signup">Sign up</a>
-        <button class="Button StreamsLogin js-login" type="submit">Log In</button>
-      </div>
-      <div class="StreamsHero-content">
-        <h2 class="StreamsHero-header">See what’s happening right now.</h2>
-          <p class="StreamsHero-blurb">Find community, conversation and inspiration about the things you love.</p>
-      </div>
+
+    
+    <div align="center">
+    	<%if((typeof search_tweets != 'undefined') && search_tweets != ""){%>
+    	<% for(var i = 0; i < search_tweets.length; i++){ %>
+    	<h1><%=search_tweets[i].raw_text%> by @<%=search_tweets[i].user_name%></h1>
+    	<%}%>
+    	<%}%>
     </div>
 </body>
 </html>

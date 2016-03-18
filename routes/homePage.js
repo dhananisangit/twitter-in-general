@@ -9,8 +9,6 @@ function afterSignIn(req, res){
 	var decipher = crypto.createDecipher('aes-256-ctr', 'd6F3Efeqwerty')
 	var hash = decipher.update(req.param("password"),'utf8','hex')
 	hash += decipher.final('hex');	 
-	//console.log(hash);
-	//console.log("hlloo");
     var getUser = "select * from login_details where user_name='" + req.param("username") + "' and password='" +hash+ "'";
     req.session.username = req.param("username");
     console.log("req.session.username at homePage.afterSignIn::"+req.session.username);
@@ -34,8 +32,8 @@ function afterSignIn(req, res){
 	        }
 	        else
 	        {
-	    json_responses = {"statusCode" : 401};
-	    res.send(json_responses);
+			    json_responses = {"statusCode" : 401};
+			    res.send(json_responses);
 	        }
 
 	    }, getUser);
@@ -348,32 +346,14 @@ function retweet(req, res){
 	console.log(req.session.username);
 	console.log(req.param("retweet"));
 	var retweet = "update tweet_details set retweet_count=retweet_count+1, retweet_user='"+req.session.username+"' where id='"+req.param("retweet")+"'";
-	mysql.storeData(function(err, result){
+	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}			
 		}
 	, retweet);
 	
-	var loadTweets = "select * from tweet_details ORDER BY ID DESC";
-	mysql.fetchData(function(err, result){
-		if(err){
-			throw err;
-			}
-		else{
-			console.log("Chutiya at::homePage.afterSignIn");
-			console.log(req.session.followusers);
-			ejs.renderFile('./views/homePage.ejs',{tweets: result, name:req.session.username, users:req.session.followusers}, function(err, result) {
-				if (!err) {
-					res.end(result);
-					}                    
-				else {               
-					res.end('An error occurred');              
-					console.log(err);           
-					}
-			});			
-		}
-	}, loadTweets);
+	homePage.redirectToHomepage(req, res);
 }
 
 

@@ -1,27 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="nameApp1">  
+<html>  
 <head>    
 <title>Successful Login</title>    
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-  <script>
-      var nameApp1 = angular.module('nameApp1', []);
-      nameApp1.controller('NameCtrl1', function ($scope){
-        $scope.names = [];
-        $scope.addName = function() {
-        $scope.names.push($scope.enteredName);
-        $scope.enteredName="";
-        };
-        $scope.removeName = function(name){
-        var i = $scope.names.indexOf(name);
-        $scope.names.splice(i, 1);
-        };
-      });
- </script>
+<script src="angularjs/follow_user.js"></script>
 </head>  
-<body ng-controller="NameCtrl1">
- 
-
+<body>
        <h2>HomePage of twitter</h2>
        <%if((typeof name1 != 'undefined') && name1 != ""){%>
        <h6>Welcome <%=name1%></h6>
@@ -31,8 +16,7 @@
    <nav id="nav">
    <ul id="navigation">
       <ul>
-        <form action="/search">
-     	 
+        <form action="/search">    	 
 		<input id="search" name="search" type="search" placeholder="Search Twitter">
 		<button type="submit">Search</button>
 		</form>
@@ -76,7 +60,23 @@
 	<% } %>
 	</div>
 	
+<!-- 	
+<div ng-repeat="user in users"><p>{{user]}}</p><br/></div>
 
+	<div align="right" ng-app="followuser" ng-controller="followuserCntrl">
+	
+	 <%if((typeof users != 'undefined') && users != ""){%>
+     <% for(var i = 0; i < users.length; i++){ %>
+
+     <%= users[i]%><br/>
+     
+	 <input type="submit" value="follow" ng-click="follow();"/></br></br>
+	
+	<% } %>
+	<% } %>
+</div> -->
+	
+	
 	<div style="float:right;">
 	
 	 <%if((typeof users != 'undefined') && users != ""){%>

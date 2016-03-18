@@ -1,0 +1,53 @@
+<!DOCTYPE html><html>  
+<head>    
+<title>Successful Login</title>    
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>  
+<script src="angularjs/updateprofile.js"></script>
+</head>  
+
+<body ng-app="profile" ng-controller="updateprofile">    
+
+<div align="center">
+<h1>Tweets and Retweets by you</h1>
+    <%if((typeof tweets != 'undefined') && tweets != ""){%>
+    <% for(var i = 0; i < tweets.length; i++){ %>
+    <p><%=name[i]%> at <%= tweet_time[i]%></p>
+    <p> <%= tweets[i].raw_text %> </p>
+
+	<% } %>
+	<% } %>
+</div>
+<table>
+<tr>
+<div>
+<h1>You follow::</h1>
+
+</div>
+</tr>
+</table>
+<input type="submit" class="submit-button" ng-click="update()" value="Update Profile">
+
+<div ng-hide="updateProfile">
+
+<form action="/updateProfile">                  
+Date of birth: <input type="date" name="dob"><br>
+UserName : <input type="text" name="user_name"><br>
+Gender: <br>
+Male<input type="radio" name="gender" required><br>
+Female<input type="radio" name="gender" required><br>
+BIO : <input type="text" name="BIO"><br>
+Location: <input type="text" name="location"><br>
+Upload a Display Pictue :  <input type="file" name="profile_pic" accept="image/*"><br/><br/>
+
+<button type="submit">Update</button>                                
+</form>
+
+</div>
+<div align="right">
+<form action="/homePage">
+<button type="submit">Home Page</button>
+</form>	
+</div>
+</body>
+</html>

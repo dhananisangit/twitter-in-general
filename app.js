@@ -48,13 +48,7 @@ app.use('/insertTweet', homePage.newTweet);
 app.use('/updateProfile', profile.updateProfile);
 app.get('/homepage', homePage.redirectToHomepage);
 app.get('/retweet', homePage.retweet);
-/*app.get('/userprofile/*', function(req, res){
-  //res.send('user ' + req.params.id);
-	//console.log(req.params.name);
-	console.log(req.param("user")+"  HAHAAHAANDJSAKDBHASBDKASVHJ");
-	res.redirect('/profile/'+req.param("user"));
-});*/
-
+app.get('/index1', user.temp);
 app.get('/userprofile/', profile.userprofile);
 app.get('/follow_user', user.follow_user);
 app.use('/home', homePage.home);

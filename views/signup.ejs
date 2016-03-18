@@ -5,18 +5,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    
-    <!-- Loading the AngularJS file -->
+
     <script src="angularjs/signup.js"></script>
 </head>
 <body ng-app="signup" ng-controller="signup">
 
+<p style="text-align:center"><img src="pics/logo.png" style="position: absolute; top: 0px;z-index: 0;" alt="twitter" height="46px" width="46px"></p>
+		<img src="pics/unnamed.png" style="position: absolute;align:center;left: 0px;top: 0px;z-index: -1;" alt="nav-bar" height="50px" width="100%">
+		
 
 <div class="text-box">
     <div class="signup-wrapper">
     <h1>Join Twitter today</h1>
     <input type="text" class="textbox-control" name="fullName" id="fullName" placeholder="Full Name" required maxlength="20" ng-model="fullName"></br></br>
-    <input type="email" class="textbox-control" name="emailID" id="email" placeholder="Phone or Email" required ng-model="emailID"></br></br>
+    <input type="email" class="textbox-control" name="emailID" id="email" placeholder="Email" required ng-model="emailID"></br></br>
     <input type="password" class="textbox-control"name="password" id="inputPassword" placeholder="Password" required ng-model="password"></br></br>
     <div class="signup-wrapper">
     

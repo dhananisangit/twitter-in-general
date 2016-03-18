@@ -4,7 +4,8 @@ signup.controller('signup',function($scope,$http)
     $scope.registered_email=true;
     $scope.unexpected_error=true;
     $scope.submit=function()
-    {console.log("HO");
+    {
+    	console.log("HO");
         $http({
         	
             method:"POST",
