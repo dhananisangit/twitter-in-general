@@ -49,6 +49,7 @@ app.use('/updateProfile', profile.updateProfile);
 app.get('/homepage', homePage.redirectToHomepage);
 app.get('/retweet', homePage.retweet);
 app.get('/index1', user.temp);
+app.get('/index2', user.temp1);
 app.get('/userprofile/', profile.userprofile);
 app.get('/follow_user', user.follow_user);
 app.use('/home', homePage.home);

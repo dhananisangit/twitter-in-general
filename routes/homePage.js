@@ -39,9 +39,14 @@ function afterSignIn(req, res){
 	    }, getUser);
 }
 
+
+function rediectToHomepage(req, res){
+	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+	res.send('index1');
+}
+
 function redirectToHomepage(req,res)
 {
-
 	async.waterfall([       
          function first(callback){
         	 console.log("spotted at :: "+req.session.username);

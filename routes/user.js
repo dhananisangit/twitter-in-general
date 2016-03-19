@@ -23,6 +23,11 @@ exports.temp = function(req, res){
 	console.log("temp");
 	res.render('index1');
 }
+
+exports.temp1 = function(req, res){
+	console.log("temp");
+	res.render('index2');
+}
 exports.search = function(req, res){
 	console.log("Search page it is");
 	console.log(req.param("search"));

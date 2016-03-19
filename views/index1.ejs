@@ -49,8 +49,10 @@ data-fouc-class-names="swift-loading"
     </li></ul>
 </div>
 
-<div class="pull-right" style="display: inline-block;"><div role="search">
+<div class="pull-right" style="display: inline-block;">
+<div role="search">
   <form class="t1-form form-search js-search-form" action="/search" id="global-nav-search">
+  
     <label class="visuallyhidden" for="search-query">Search query</label>
     <input class="search-input" type="text" id="search-query" placeholder="Search Twitter" name="q" autocomplete="off" spellcheck="false">
     <span class="search-icon js-search-action">
@@ -61,8 +63,9 @@ data-fouc-class-names="swift-loading"
       
   </form>
 </div>
-<ul class="nav right-actions"><li class="me dropdown session js-session" data-global-action="t1me" id="user-dropdown">
-<img style="margin-top: 7px;margin-left: 15px;"class="avatar size32" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_4_normal.png" alt="Profile and settings" data-user-id="703806129919250432"></a>
+<ul class="nav right-actions">
+<li class="me dropdown session js-session" data-global-action="t1me" id="user-dropdown">
+<a href="#"><img style="margin-top: 7px;margin-left: 15px;"class="avatar size32" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_4_normal.png" alt="Profile and settings" data-user-id="703806129919250432"></a>
       <div class="dropdown-menu">
   <div class="dropdown-caret">
     <span class="caret-outer"></span>
@@ -585,7 +588,8 @@ data-fouc-class-names="swift-loading"
       <h2 id="content-main-heading" class="js-timeline-title">Tweets</h2>
     </div>
   </div>
-        <div class="stream-container conversations-enabled "
+  
+   <div class="stream-container conversations-enabled "
     data-max-position="710373121094787073" data-min-position="710320175958994944">
 
     <div class="stream">
@@ -605,15 +609,300 @@ data-fouc-class-names="swift-loading"
 </div>
 
     <div class="stream-loading">
-  <div class="stream-end-inner">
-    <span class="spinner" title="Loading..."></span>
+    
+  <div class="stream-end-inner" align="left">
+  <strong class="fullname js-action-profile-name show-popup-with-id" data-aria-label-part>fullname</strong>
+    <span>&rlm;</span><span class="username js-action-profile-name" data-aria-label-part><s>@</s><b>username</b></span>
+  <p align="left">This is my tweet which is completely static bitch.</p>
+      <div class="stream-item-footer">
+  
+
+  
+        <div class="ProfileTweet-actionCountList u-hiddenVisually">
+    
+    <span class="ProfileTweet-action--reply u-hiddenVisually"></span>
+    <span class="ProfileTweet-action--retweet u-hiddenVisually">
+      
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 retweet</span>
+      </span>
+    </span>
+    <span class="ProfileTweet-action--favorite u-hiddenVisually">
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 like</span>
+      </span>
+    </span>
   </div>
+
+    <div class="ProfileTweet-actionList js-actions" role="group" aria-label="Tweet actions">
+      <div class="ProfileTweet-action ProfileTweet-action--reply">
+  <button class="ProfileTweet-actionButton u-textUserColorHover js-actionButton js-actionReply"
+    data-modal="ProfileTweet-reply"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Reply">
+      <span class="Icon Icon--reply"></span>
+      <span class="u-hiddenVisually">Reply</span>
+    </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--retweet js-toggleState js-toggleRt">
+  <button class="ProfileTweet-actionButton  js-actionButton js-actionRetweet"
+    
+    data-modal="ProfileTweet-retweet"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweet</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo js-actionButton js-actionRetweet" data-modal="ProfileTweet-retweet" type="button">
+    <div class="IconContainer js-tooltip" title="Undo retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweeted</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--favorite js-toggleState">
+  <button class="ProfileTweet-actionButton js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Like</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo u-linkClean js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Undo like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Liked</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+
+</div>
+  
+    </div>
+  </div>
+   <div class="stream-end-inner" align="left">
+  <strong class="fullname js-action-profile-name show-popup-with-id" data-aria-label-part>fullname</strong>
+    <span>&rlm;</span><span class="username js-action-profile-name" data-aria-label-part><s>@</s><b>username</b></span>
+  <p align="left">This is my tweet which is completely static bitch.</p>
+      <div class="stream-item-footer">
+  
+
+  
+        <div class="ProfileTweet-actionCountList u-hiddenVisually">
+    
+    <span class="ProfileTweet-action--reply u-hiddenVisually"></span>
+    <span class="ProfileTweet-action--retweet u-hiddenVisually">
+      
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 retweet</span>
+      </span>
+    </span>
+    <span class="ProfileTweet-action--favorite u-hiddenVisually">
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 like</span>
+      </span>
+    </span>
+  </div>
+
+    <div class="ProfileTweet-actionList js-actions" role="group" aria-label="Tweet actions">
+      <div class="ProfileTweet-action ProfileTweet-action--reply">
+  <button class="ProfileTweet-actionButton u-textUserColorHover js-actionButton js-actionReply"
+    data-modal="ProfileTweet-reply"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Reply">
+      <span class="Icon Icon--reply"></span>
+      <span class="u-hiddenVisually">Reply</span>
+    </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--retweet js-toggleState js-toggleRt">
+  <button class="ProfileTweet-actionButton  js-actionButton js-actionRetweet"
+    
+    data-modal="ProfileTweet-retweet"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweet</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo js-actionButton js-actionRetweet" data-modal="ProfileTweet-retweet" type="button">
+    <div class="IconContainer js-tooltip" title="Undo retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweeted</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--favorite js-toggleState">
+  <button class="ProfileTweet-actionButton js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Like</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo u-linkClean js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Undo like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Liked</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+
+</div>
+  
+    </div>
+  </div>
+   <div class="stream-end-inner" align="left">
+  <strong class="fullname js-action-profile-name show-popup-with-id" data-aria-label-part>fullname</strong>
+    <span>&rlm;</span><span class="username js-action-profile-name" data-aria-label-part><s>@</s><b>username</b></span>
+  <p align="left">This is my tweet which is completely <a href="#"> #bitch </a>static bitch.</p>
+  </div>
+   <div class="stream-end-inner" align="left">
+  <strong class="fullname js-action-profile-name show-popup-with-id" data-aria-label-part>fullname</strong>
+    <span>&rlm;</span><span class="username js-action-profile-name" data-aria-label-part><s>@</s><b>username</b></span>
+  <p align="left">This is my tweet which is completely static bitch.</p>
+      <div class="stream-item-footer">
+  
+
+  
+        <div class="ProfileTweet-actionCountList u-hiddenVisually">
+    
+    <span class="ProfileTweet-action--reply u-hiddenVisually"></span>
+    <span class="ProfileTweet-action--retweet u-hiddenVisually">
+      
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 retweet</span>
+      </span>
+    </span>
+    <span class="ProfileTweet-action--favorite u-hiddenVisually">
+      <span class="ProfileTweet-actionCount"  data-tweet-stat-count="1">
+        <span class="ProfileTweet-actionCountForAria" data-aria-label-part>1 like</span>
+      </span>
+    </span>
+  </div>
+
+    <div class="ProfileTweet-actionList js-actions" role="group" aria-label="Tweet actions">
+      <div class="ProfileTweet-action ProfileTweet-action--reply">
+  <button class="ProfileTweet-actionButton u-textUserColorHover js-actionButton js-actionReply"
+    data-modal="ProfileTweet-reply"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Reply">
+      <span class="Icon Icon--reply"></span>
+      <span class="u-hiddenVisually">Reply</span>
+    </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--retweet js-toggleState js-toggleRt">
+  <button class="ProfileTweet-actionButton  js-actionButton js-actionRetweet"
+    
+    data-modal="ProfileTweet-retweet"
+    type="button">
+    <div class="IconContainer js-tooltip" title="Retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweet</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo js-actionButton js-actionRetweet" data-modal="ProfileTweet-retweet" type="button">
+    <div class="IconContainer js-tooltip" title="Undo retweet">
+      <span class="Icon Icon--retweet"></span>
+      <span class="u-hiddenVisually">Retweeted</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+      <div class="ProfileTweet-action ProfileTweet-action--favorite js-toggleState">
+  <button class="ProfileTweet-actionButton js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Like</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button><button class="ProfileTweet-actionButtonUndo u-linkClean js-actionButton js-actionFavorite" type="button">
+    <div class="IconContainer js-tooltip" title="Undo like">
+      <div class="HeartAnimationContainer">
+        <div class="HeartAnimation "></div>
+      </div>
+      <span class="u-hiddenVisually">Liked</span>
+    </div>
+      <div class="IconTextContainer">
+        <span class="ProfileTweet-actionCount">
+          <span class="ProfileTweet-actionCountForPresentation" aria-hidden="true">1</span>
+        </span>
+      </div>
+  </button>
+</div>
+
+</div>
+  
+    </div>
+  </div>
+  
 </div>
 
   </div>
+  
 </div>
 
 </div>
+
     </div>
   </div>
 </li>
