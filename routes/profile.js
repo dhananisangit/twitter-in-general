@@ -3,45 +3,71 @@ var mysql = require('./mysql');
 
 
 function profile(req, res){
-	
 	console.log("Chutiya spotted at profile.profile");
 	console.log(req.session.username+":: at req.session.username");	
-	var loadTweets = "select * from tweet_details where retweet_user='"+req.session.username+"'or user_name='"+req.session.username+"' ORDER BY ID DESC select following_username from follow where user_name='"+req.session.username+"';"
+	var loadTweets = "select * from tweet_details where retweet_user='"+req.session.username+"'or user_name='"+req.session.username+"' ORDER BY ID DESC ;"
 	console.log("its an :"+loadTweets);
 	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}
 		else{
-			var date=[];
-			for(var i=0;i<result.length;i++){
-			var	time= result[i].timeofTweet.toString();
-			var splitResult = time.split("2016");
-			date[i] = splitResult[0];
-			console.log("date ke niche"+ result[i].following_username);
-			}
-			var names = [];
-			for(var i=0;i<result.length;i++){
-				var time = result[i].user_name;
-				if(time!=req.session.username){
-					names[i]="You Retweeted @"+result[i].user_name;
+			var jsonString1 = JSON.stringify(result);
+            var tweets = JSON.parse(jsonString1);
+           // console.log(tweets);
+			var following = "select * from follow where following_username='"+req.session.username+"'";
+			mysql.fetchData(function(err, result){
+				if(err){
+					throw err;
 				}
 				else{
-					names[i] ="@" +result[i].user_name;
+					console.log(result.length+":number of following");
+					var followings = result.length;
+					var jsonString2 = JSON.stringify(result);
+		            var nameoffollowings = JSON.parse(jsonString2);
+					console.log(nameoffollowings);
+					var followers1 = "select * from follow where user_name='"+req.session.username+"'";
+					mysql.fetchData(function(err, result){
+						if(result.length>0){
+							console.log(result.length+"::followers")
+							var followers = result.length;
+							var jsonString3 = JSON.stringify(result);
+				            var nameoffollowers = JSON.parse(jsonString3);
+							console.log(nameoffollowers);
+							var tweet_count = "select COUNT(*) as num1 from tweet_details where user_name='"+req.session.username+"' or retweet_user='"+req.session.username+"'";
+							mysql.fetchData(function(err, result){
+								if(result.length>0){
+									var count = result[0].num1;
+									var infor = "select * from user_details where user_name='"+req.session.username+"'";
+									mysql.fetchData(function(err, result){
+										if(result.length>0){
+											var json = JSON.stringify(result[0]);
+											var info = JSON.parse(json);
+											//console.log(info);
+											
+											 res.send({
+												follower:followers,
+												following:followings,
+												nameFollowers : nameoffollowers,
+												nameFollowing : nameoffollowings,
+												tweet_count:count,
+												alltweets: tweets,
+												information:info
+												
+											})
+											
+										}
+									}, infor);
+								}
+							}, tweet_count);
+						}
+					}, followers1);
 				}
-			}			
-			ejs.renderFile('./views/profile.ejs',{tweets: result, tweet_time:date, name:names}, function(err, result) {
-				if (!err) {
-					res.end(result);
-					}                    
-				else {               
-					res.end('An error occurred');              
-					console.log(err);           
-					}
-			});
-		}
+			}, following);
+		}			
 	}, loadTweets);
 }
+
 
 
 function updateProfile(req, res){

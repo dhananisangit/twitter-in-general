@@ -1,6 +1,33 @@
+/*var mysql = require('mysql');//importing module
+var pool = require('./pool');
+
+
+function fetchData(callback, sqlQuery){
+	
+	console.log("\nSqlquery:: "+ sqlQuery );
+	var connection = pool.getConnectionFromPool();
+	
+		connection.query(sqlQuery, function(err, rows, fields){
+			if(err){
+				console.log("ERROR: " + err.message);
+			}
+			else{
+			//	console.log("DB Results:"+"hellllloooooo");   
+				callback(err, rows);
+			}
+		});
+		pool.releaseConnection(connection);
+	
+}
+*/
+
+
+
+
+/*
 var ejs= require('ejs');//importing module ejs
 var mysql = require('mysql');//importing module
-/*
+
 function getConnection(){
 	var connection = mysql.createConnection({
 		host : 'localhost',
@@ -11,6 +38,7 @@ function getConnection(){
 	});
 	return connection;
 }*/
+var mysql = require('mysql');
 
 var pool      =    mysql.createPool({
     connectionLimit : 100, //important
@@ -38,22 +66,6 @@ function fetchData(callback, sqlQuery){
 	
 }
 
-function storeData(callback, sqlQuery){
-	var connection = getConnection();
-	connection.query(sqlQuery, function(err, rows, fields){
-		if(err){
-			console.log("ERROR:"+ err.message);
-		}
-		else{
-		//	console.log("DB Results:"+rows);
-			callback(err, rows);
-		}
-	});
-	connection.end();
-}
-
-
 
 
 exports.fetchData = fetchData;
-exports.storeData=storeData;

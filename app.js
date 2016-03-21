@@ -4,13 +4,14 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , session = require('client-sessions');
+var fs = require('fs');
+var pool = require('./routes/pool');
 var home = require('./routes/home');
 var homePage = require('./routes/homePage');
 var profile = require('./routes/profile');
 var app = express();
 
 app.use(session({   
-	  
 	cookieName: 'session',    
 	secret: 'cmpe273_test_string',    
 	duration: 30 * 60 * 1000,    
@@ -35,6 +36,15 @@ if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 
+var data = fs.readFileSync('./public/config/pool.conf', 'utf-8');
+if(data!=null && typeof data !='undefined'){
+	var lines = data.split("\n");
+	pool.createPool(lines[0], lines[1])
+}
+else{
+	pool.createPool(100, 400)
+}
+
 app.get('/', routes.index);
 app.get('/signin', home.signin);
 app.post('/aftersignin',homePage.afterSignIn);
@@ -47,13 +57,14 @@ app.use('/profile',profile.profile);
 app.use('/insertTweet', homePage.newTweet);
 app.use('/updateProfile', profile.updateProfile);
 app.get('/homepage', homePage.redirectToHomepage);
-app.get('/retweet', homePage.retweet);
+app.get('/homepage1', homePage.redirectToHomepage1);
+app.post('/retweet', homePage.retweet);
 app.get('/index1', user.temp);
 app.get('/index2', user.temp1);
 app.get('/userprofile/', profile.userprofile);
-app.get('/follow_user', user.follow_user);
-app.use('/home', homePage.home);
-app.use('/search', user.search);
+app.post('/follow_user', user.follow_user);
+//app.use('/home', homePage.home);
+app.post('/search', user.search);
 
 
 http.createServer(app).listen(app.get('port'), function(){

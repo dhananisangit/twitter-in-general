@@ -9,14 +9,14 @@ exports.follow_user = function(req, res){
 	var follow_query = "insert into follow (user_name, following_username)" +
 	"values('"+req.session.username+"', '"+req.param("follow")+"')";
 	
-	
+	//console.log(follow_query+":::::::::::::::::::::");
 	mysql.fetchData(function(err, result){
 		if(err){
 			throw err;
 			}			
 		}
 	, follow_query);	
-	homePage.redirectToHomepage(req, res);
+	res.render('index1');
 }
 
 exports.temp = function(req, res){
@@ -25,9 +25,10 @@ exports.temp = function(req, res){
 }
 
 exports.temp1 = function(req, res){
-	console.log("temp");
+	console.log("temp0oo");
 	res.render('index2');
 }
+
 exports.search = function(req, res){
 	console.log("Search page it is");
 	console.log(req.param("search"));
@@ -39,16 +40,12 @@ exports.search = function(req, res){
 			throw err;
 			}
 		else{
-			ejs.renderFile('./views/index.ejs',{search_tweets: result}, function(err, result) {
- 				if (!err) {
- 					res.end(result);
- 					}                    
- 				else {               
- 					res.end('An error occurred');              
- 					console.log(err);           
- 					}
- 			});
+			var jsonString1 = JSON.stringify(result);
+            var tweets = JSON.parse(jsonString1);
+           // console.log(tweets[0].raw_text);
+			res.send({search_tweets: tweets});
 		}
 		}
 	, search_query);		
+	
 }
